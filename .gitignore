@@ -1,3 +1,4 @@
 node_modules/
-jsconfig.json
+dist/
+src/tests/
 *.sock

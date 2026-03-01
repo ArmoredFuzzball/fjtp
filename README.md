@@ -1,4 +1,4 @@
-<h1>JSON Fast Transfer Protocol</h1>
+<h1>Fast JSON Transfer Protocol</h1>
 This simple library provides a fast and efficient way to communicate between different Node.js processes using JSON over Unix Domain Sockets.
 
 <h2>Performance</h2>
@@ -9,7 +9,7 @@ NOTE: For larger payloads (more than ~96 KB), popular HTTP-based libraries start
 <h3>Benchmarks</h3>
 
 <table class="center">
-  <caption>Performance comparison of Fastify+Fetch and JFTP</caption>
+  <caption>Performance comparison of Fastify+Fetch and FJTP</caption>
   <thead>
     <tr>
       <th rowspan="2">Payload<br>size (KB)</th>
@@ -18,9 +18,9 @@ NOTE: For larger payloads (more than ~96 KB), popular HTTP-based libraries start
     </tr>
     <tr>
       <th>Fastify</th>
-      <th>JFTP</th>
+      <th>FJTP</th>
       <th>Fastify</th>
-      <th>JFTP</th>
+      <th>FJTP</th>
     </tr>
   </thead>
   <tbody>
@@ -43,9 +43,9 @@ NOTE: For larger payloads (more than ~96 KB), popular HTTP-based libraries start
   </tbody>
 </table>
 
-*Test conducted with JFTP 1.5.1, Fastify 5.5.0, Node.js v22.18.0*
+*Test conducted with FJTP 1.5.1, Fastify 5.5.0, Node.js v22.18.0*
 
-JFTP is best suited for scenarios where you need high bandwidth and low latency with small to medium JSON payloads (for example, a backend authentication service, which just transmits tokens or user credentials to other services).
+FJTP is best suited for scenarios where you need high bandwidth and low latency with small to medium JSON payloads (for example, a backend authentication service, which just transmits tokens or user credentials to other services).
 
 <h2>Security</h2>
 Unix Domain Sockets are not exposed to the network. Instead, they are files in the file system. This typically makes them more secure than communication over localhost. Care should still be taken to ensure that the folder which contains the Unix Domain Socket file is properly permissioned and accessible only to trusted users. This helps prevent unauthorized access to the communication channel.
@@ -53,28 +53,22 @@ Unix Domain Sockets are not exposed to the network. Instead, they are files in t
 <h2>Server Example</h2>
 
 ```js
-import { UDSocketServer, createSerializer } from 'jftp';
+import { FJTPServer } from 'fjtp';
 const SOCKET_PATH = './secure_directory/my_socket.sock';
 
-const server = new UDSocketServer();
-
-// Create optional serializer for improved performance
-const serializer = createSerializer({
-  type: 'object',
-  properties: {
-    anything: { type: 'string' }
-  }
-});
+const options = { clientOptions: { UDSInterfaceOptions: { payloadCodecOptions: { encoding: 'ascii' } } } };
+const server = new FJTPServer(options);
 
 // Handle incoming connections
-server.on('connection', (socket) => {
+server.onConnection((socket) => {
   console.log('Client connected');
 
   // Handle incoming messages
-  socket.handle((message) => {
+  socket.onRequest((message) => {
     console.log('Received message:', message);
-    socket.schema(serializer); // Use custom serializer for responses
     return { anything: 'Hello from server!' };
+    //or throw an error to the client
+    throw new Error("Something went wrong!");
   });
 
   // Handle socket disconnect
@@ -89,24 +83,17 @@ server.on('connection', (socket) => {
 });
 
 // Listen for incoming connections
-server.start(SOCKET_PATH, () => console.log(`Server listening on ${SOCKET_PATH}`));
+server.listen(SOCKET_PATH, () => console.log(`Server listening on ${SOCKET_PATH}`));
 ```
 
 <h2>Client Example</h2>
 
 ```js
-import UDSocket, { createSerializer } from 'jftp';
+import { FJTPClient } from 'fjtp';
 const SOCKET_PATH = './secure_directory/my_socket.sock';
 
-const socket = new UDSocket({ timeoutMs: 3000 }); //custom timeout
-
-// Create optional serializer for improved performance
-const serializer = createSerializer({
-  type: 'object',
-  properties: {
-    anything: { type: 'string' }
-  }
-});
+const options = { UDSInterfaceOptions: { payloadCodecOptions: { encoding: 'ascii' } } };
+const socket = new FJTPClient(options);
 
 // Handle socket errors
 socket.on('error', (error) => {
@@ -118,7 +105,7 @@ socket.connect(SOCKET_PATH, () => {
   console.log("Connected to the server");
 
   // Send a message and wait for a response
-  socket.schema(serializer).rpc({ anything: 'Hello from client!' })
+  socket.rpc({ anything: 'Hello from client!' }, 3000) //custom timeout ms
     .then(response => {
       console.log('Received response:', response);
     })

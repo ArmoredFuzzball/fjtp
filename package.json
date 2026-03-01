@@ -1,23 +1,23 @@
 {
-  "name": "jftp",
+  "name": "fjtp",
   "description": "Node.js interprocess communication with JSON",
-  "version": "1.7.1",
+  "version": "2.0.0",
   "type": "module",
-  "main": "src/socket.mjs",
-  "types": "src/socket.d.ts",
+  "main": "dist/protocol.js",
+  "types": "dist/protocol.d.ts",
   "exports": {
     ".": {
-      "types": "./src/socket.d.ts",
-      "import": "./src/socket.mjs",
-      "default": "./src/socket.mjs"
+      "types": "./dist/protocol.d.ts",
+      "import": "./dist/protocol.js",
+      "default": "./dist/protocol.js"
     },
     "./package.json": "./package.json"
   },
   "repository": {
     "type": "git",
-    "url": "git://ArmoredFuzzball/jftp.git"
+    "url": "git://ArmoredFuzzball/fjtp.git"
   },
-  "homepage": "https://github.com/ArmoredFuzzball/jftp#readme",
+  "homepage": "https://github.com/ArmoredFuzzball/fjtp#readme",
   "license": "MIT",
   "readmeFilename": "README.md",
   "keywords": [
@@ -28,12 +28,16 @@
     "unix",
     "domain",
     "sockets",
-    "jftp",
+    "fjtp",
     "fast",
     "transfer",
     "protocol"
   ],
-  "optionalDependencies": {
-    "fast-json-stringify": "^6.0.1"
+  "devDependencies": {
+    "@types/node": "^25.3.3",
+    "typescript": "^5.9.3"
+  },
+  "scripts": {
+    "build": "tsc"
   }
 }
