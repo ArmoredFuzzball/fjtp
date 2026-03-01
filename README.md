@@ -4,7 +4,7 @@ This simple library provides a fast and efficient way to communicate between dif
 <h2>Performance</h2>
 For small to medium payloads, this library offers extremely high speed communication with minimal overhead, considerably higher bandwidth and lower latency than popular alternatives.
 <br>
-NOTE: For larger payloads (more than ~96 KB), popular HTTP-based libraries start to quickly outperform this library by a large margin, as their protocol overhead no longer dominates at that scale and actually starts helping.
+NOTE: For larger payloads (more than ~256 KB), popular HTTP-based libraries start to quickly outperform this library by a large margin, as their protocol overhead no longer dominates at that scale and actually starts helping.
 
 <h3>Benchmarks</h3>
 
@@ -24,26 +24,28 @@ NOTE: For larger payloads (more than ~96 KB), popular HTTP-based libraries start
     </tr>
   </thead>
   <tbody>
-    <tr><td>~0</td><td>10,900</td><td>123,400</td><td>0.27</td><td>0.019</td></tr>
-    <tr><td>0.5</td><td>10,300</td><td>98,400</td><td>0.28</td><td>0.028</td></tr>
-    <tr><td>1</td><td>10,200</td><td>84,300</td><td>0.28</td><td>0.033</td></tr>
-    <tr><td>2</td><td>9,800</td><td>65,600</td><td>0.29</td><td>0.041</td></tr>
-    <tr><td>4</td><td>9,100</td><td>46,700</td><td>0.30</td><td>0.055</td></tr>
-    <tr><td>8</td><td>8,200</td><td>30,300</td><td>0.33</td><td>0.091</td></tr>
-    <tr><td>12</td><td>7,400</td><td>22,000</td><td>0.35</td><td>0.12</td></tr>
-    <tr><td>16</td><td>6,700</td><td>17,300</td><td>0.38</td><td>0.15</td></tr>
-    <tr><td>24</td><td>5,500</td><td>12,200</td><td>0.45</td><td>0.20</td></tr>
-    <tr><td>32</td><td>5,000</td><td>9,300</td><td>0.50</td><td>0.26</td></tr>
-    <tr><td>48</td><td>3,800</td><td>6,400</td><td>0.64</td><td>0.38</td></tr>
-    <tr><td>64</td><td>3,000</td><td>4,900</td><td>0.78</td><td>0.56</td></tr>
-    <tr><td>72</td><td>2,700</td><td>4,200</td><td>0.86</td><td>0.56</td></tr>
-    <tr><td>96</td><td>2,200</td><td>3,100</td><td>1.04</td><td>3.5</td></tr>
-    <tr><td>128</td><td>1,800</td><td>2,100</td><td>1.31</td><td>46.9</td></tr>
-    <tr><td>256</td><td>900</td><td>600</td><td>2.77</td><td>160</td></tr>
+    <tr><td>~0</td><td>15,400</td><td>121,000</td><td>0.065</td><td>0.008</td></tr>
+    <tr><td>0.5</td><td>14,400</td><td>96,000</td><td>0.070</td><td>0.010</td></tr>
+    <tr><td>1</td><td>13,500</td><td>84,500</td><td>0.074</td><td>0.012</td></tr>
+    <tr><td>2</td><td>12,900</td><td>67,000</td><td>0.078</td><td>0.015</td></tr>
+    <tr><td>4</td><td>11,700</td><td>49,000</td><td>0.086</td><td>0.021</td></tr>
+    <tr><td>8</td><td>10,500</td><td>32,000</td><td>0.096</td><td>0.030</td></tr>
+    <tr><td>12</td><td>9,100</td><td>23,500</td><td>0.110</td><td>0.041</td></tr>
+    <tr><td>16</td><td>8,000</td><td>19,300</td><td>0.126</td><td>0.052</td></tr>
+    <tr><td>24</td><td>6,300</td><td>14,000</td><td>0.158</td><td>0.071</td></tr>
+    <tr><td>32</td><td>5,000</td><td>10,000</td><td>0.200</td><td>0.100</td></tr>
+    <tr><td>48</td><td>4,300</td><td>9,000</td><td>0.230</td><td>0.112</td></tr>
+    <tr><td>64</td><td>2,900</td><td>5,800</td><td>0.340</td><td>0.172</td></tr>
+    <tr><td>72</td><td>2,800</td><td>5,700</td><td>0.351</td><td>0.176</td></tr>
+    <tr><td>96</td><td>2,400</td><td>4,200</td><td>0.425</td><td>0.240</td></tr>
+    <tr><td>128</td><td>1,300</td><td>1,800</td><td>0.745</td><td>0.570</td></tr>
+    <tr><td>256</td><td>800</td><td>800</td><td>1.300</td><td>1.200</td></tr>
+    <tr><td>512</td><td>400</td><td>400</td><td>2.370</td><td>2.550</td></tr>
+    <tr><td>768</td><td>300</td><td>200</td><td>3.480</td><td>4.100</td></tr>
   </tbody>
 </table>
 
-*Test conducted with FJTP 1.5.1, Fastify 5.5.0, Node.js v22.18.0*
+*Test conducted with FJTP 2.0.1, Fastify 5.7.4, Node.js v24.14.0*
 
 FJTP is best suited for scenarios where you need high bandwidth and low latency with small to medium JSON payloads (for example, a backend authentication service, which just transmits tokens or user credentials to other services).
 
