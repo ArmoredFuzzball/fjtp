@@ -1,7 +1,7 @@
 {
-  "name": "fjtp",
+  "name": "@armoredfuzzball/fjtp",
   "description": "Node.js interprocess communication with JSON",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "type": "module",
   "main": "dist/protocol.js",
   "types": "dist/protocol.d.ts",
@@ -21,15 +21,16 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "keywords": [
-    "json",
     "ipc",
     "interprocess",
     "communication",
+    "uds",
     "unix",
     "domain",
     "sockets",
     "fjtp",
     "fast",
+    "json",
     "transfer",
     "protocol"
   ],
